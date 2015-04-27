@@ -11,8 +11,8 @@ import com.ana.datasource.dao.GenericDao;
 
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 	@Autowired
-	private SessionFactory sessionFactory;
-	private Class<?> persistentClass;
+	protected SessionFactory sessionFactory;
+	protected Class<?> persistentClass;
 
 	{
 		ParameterizedType type = ((ParameterizedType) getClass()

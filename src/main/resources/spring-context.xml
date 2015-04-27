@@ -10,15 +10,18 @@
 
 	<context:property-placeholder
 		location="classpath:database-configuration.properties" />
-	<context:component-scan base-package="com.ana.datasource.dao,com.ana.datasource.impl" />
+	<context:component-scan
+		base-package="com.ana.datasource.dao,com.ana.datasource.impl,com.ana.datasource.audit" />
 	<tx:annotation-driven />
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.user}" />
 		<property name="password" value="${jdbc.pass}" />
 	</bean>
+	<bean id="auditInterceptor" class="com.ana.datasource.audit.AuditInterceptor"/>
 
 	<!-- Hibernate 4 SessionFactory Bean definition -->
 	<bean id="sessionFactory"
@@ -27,6 +30,7 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.ana.datasource.model.SchoolYear</value>
+				<value>com.ana.datasource.model.AuditLog</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -40,6 +44,7 @@
 	<bean id="txManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="entityInterceptorBeanName" value="auditInterceptor" />
 	</bean>
 
 </beans>

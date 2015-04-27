@@ -7,27 +7,23 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ana.datasource.dao.SchoolYearDao;
-import com.ana.datasource.model.SchoolYear;
+import com.ana.datasource.dao.AuditDao;
+import com.ana.datasource.model.AuditLog;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({ "classpath:spring-test-context.xml" })
 @Transactional
-@TransactionConfiguration(defaultRollback=false)
-public class SchoolDaoImplTest {
+public class AuditDaoImplTest {
 	@Autowired
-	private SchoolYearDao schoolYearDao;
+	private AuditDao auditDao;
 
 	@Test
 	public void save() {
-		SchoolYear schoolYear = new SchoolYear();
-		schoolYear.setDescription("School Year 2014-2015");
-		schoolYear.setStartDate(LocalDate.of(2014, 9, 15));
-		schoolYear.setEndDate(LocalDate.of(2015, 6, 15));
+		AuditLog schoolYear = new AuditLog("Save", "Details abou operation",
+				LocalDate.now(), 1, "SchoolYear");
 
-		schoolYearDao.saveOrUpdate(schoolYear);
+		auditDao.saveOrUpdate(schoolYear);
 	}
 }
